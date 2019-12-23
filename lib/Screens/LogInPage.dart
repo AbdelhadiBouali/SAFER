@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
+import 'SignUpPage.dart';
 import 'package:responsive_container/responsive_container.dart';
-import 'LogInPage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import './HomePage.dart';
 
-class SignUpPage extends StatefulWidget {
+
+class LogInPage extends StatefulWidget {
   @override
   State createState() {
-    return new SignUpPageState();
+    return new LogInPageState();
   }
 }
 
-class SignUpPageState extends State<SignUpPage> {
-  String _email, _password, _name;
+class LogInPageState extends State<LogInPage> {
+  String _email, _password;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String error;
@@ -21,7 +25,6 @@ class SignUpPageState extends State<SignUpPage> {
     // TODO: implement build
     return new Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
         color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Form(
@@ -31,13 +34,13 @@ class SignUpPageState extends State<SignUpPage> {
               children: <Widget>[
                 ResponsiveContainer(
                     margin: EdgeInsets.only(top: 50),
-                    heightPercent: 30.0,
-                    widthPercent: 30.0,
+                    heightPercent: 35.0,
+                    widthPercent: 50.0,
                     child: Image.asset('assets/images/logo1.png')),
                 Row(
                   children: <Widget>[
                     Text(
-                      "Create an account",
+                      "Sign in",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Colors.black,
@@ -50,40 +53,6 @@ class SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   height: 16,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ThemeColors.lightGrey,
-                  ),
-                  child: Center(
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'Montserrat',
-                          color: Colors.black87),
-                      cursorColor: Colors.green[200],
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.person,
-                          size: 18,
-                          color: Colors.green,
-                        ),
-                        border: InputBorder.none,
-                        hintText: "FULL NAME",
-                        //  hintStyle: Theme.of(context).textTheme.display2,
-                      ),
-                      onChanged: (input) {
-                        setState(() {
-                          _name = input;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 52,
@@ -153,7 +122,7 @@ class SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -165,81 +134,31 @@ class SignUpPageState extends State<SignUpPage> {
                       boxShadow: [
                         new BoxShadow(
                           color: Colors.green[400],
-                          blurRadius: 10.0,
+                          blurRadius: 13.0,
                         ),
                       ]),
                   child: FlatButton(
                       splashColor: Color(0x25FFDDDD),
                       highlightColor: Colors.transparent,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      onPressed: () {
-                        // USE _email and _password to sign in the user and take him to the main page
-                      },
+                      onPressed: (){
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage()));
+                      } ,
                       child: Text(
-                        "SIGN UP",
+                        "SIGN IN",
                         style: new TextStyle(
                             color: Colors.white,
                             fontFamily: 'Oxygen',
                             fontSize: 16),
                       )),
                 ),
-                SizedBox(
-                  height: 25,
-                ),
                 Container(
+                  margin: EdgeInsets.only(top: 80),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("OR SIGN UP WITH",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontFamily: 'Montserrat',
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold
-                          )),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 52,
-                  //    color: Colors.green[400],
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: ColorsSocial.facebook,
-                      boxShadow: [
-                        new BoxShadow(
-                          color: Colors.blue[400],
-                          blurRadius: 5.0,
-                        ),
-                      ]),
-                  child: FlatButton(
-                      splashColor: Color(0x25FFDDDD),
-                      highlightColor: Colors.transparent,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      onPressed: () {
-                        // USE _email and _password to sign in the user and take him to the main page
-                      },
-                      child: Text(
-                        "FACEBOOK",
-                        style: new TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Oxygen',
-                            fontSize: 16),
-                      )),
-                ),
-               SizedBox(
-                  height: 25,
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Already have an account?",
+                      Text("Don't have an account?",
                           style: TextStyle(
                             color: Colors.black54,
                             fontFamily: 'Montserrat',
@@ -247,7 +166,7 @@ class SignUpPageState extends State<SignUpPage> {
                           )),
                       GestureDetector(
                           child: Text(
-                            "SIGN IN",
+                            "JOIN US",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Montserrat',
@@ -255,10 +174,8 @@ class SignUpPageState extends State<SignUpPage> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        LogInPage()));
+                           Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => SignUpPage()));
                           }),
                     ],
                   ),
@@ -268,4 +185,6 @@ class SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+
 }
