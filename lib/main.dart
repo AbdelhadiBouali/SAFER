@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import './model/SplashScreen.dart';
+import 'Screens/HomePage.dart';
+import 'Screens/LogInPage.dart';
+import 'Screens/SignUpPage.dart';
+import 'Screens/PackageDetails.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +17,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: SplashScreen(),
+      routes: <String, WidgetBuilder>{
+          "/HomePage": (BuildContext context) => new HomePage(),
+          "/SignUpPage": (BuildContext context) => new SignUpPage(),
+          "/LogIn": (BuildContext context) => new LogInPage(),
+        },
     );
   }
 }
@@ -58,3 +67,64 @@ class ShadowColors {
 class ColorsSocial {
   static const Color facebook = Color(0xFF3B5998);
 }
+
+class User {
+  static String home;
+  static String token;
+  static String datedepa;
+  static String datearriv;
+  static String billet;
+  static String vtc;
+  static String maison;
+  // just some setters and getters
+  static void setHome(String value) {
+    home = value;
+  }
+
+  static String getHome() {
+    return home;
+  }
+
+  static void setToken(String value) {
+    token = value;
+  }
+
+  static String getToken() {
+    return token;
+  }
+
+
+   static void setDatedepa(String value) {
+    datedepa = value;
+  }
+
+  static String getDatedepa() {
+    return datedepa;
+  } 
+
+  static void setDatearriv(String value) {
+    datearriv = value;
+  }
+
+  static String getDatearriv() {
+    return datearriv;
+  } 
+  
+  
+  static void setBillet(String value) {
+    billet = value;
+  }
+
+  static String getBillet() {
+    return billet;
+  } 
+  
+  static void setVtc(String value) {
+    vtc = value;
+  }
+
+  static String getVtc() {
+    return vtc;
+  }
+}
+

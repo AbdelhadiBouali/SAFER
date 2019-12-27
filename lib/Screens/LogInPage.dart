@@ -5,7 +5,13 @@ import 'package:responsive_container/responsive_container.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import './HomePage.dart';
-
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class LogInPage extends StatefulWidget {
   @override
@@ -16,9 +22,51 @@ class LogInPage extends StatefulWidget {
 
 class LogInPageState extends State<LogInPage> {
   String _email, _password;
+
+  bool _isLoading = false;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String error;
+
+  _makePostRequest(String email, String pass) async {
+    // set up POST request arguments
+
+    String url = 'http://172.20.10.6:3000/user/login';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    String json = '{"email": "$email", "motDePasse": "$pass"}';
+    // make POST request
+
+    Response response = await post(url, headers: headers, body: json);
+    // check the status code for the result
+
+    int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      String body = response.body;
+      var parsedJson = jsonDecode(body);
+     // String test = parsedJson();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+    }
+    // this API passes back the id of the new item added to the body
+  }
+
+/*
+  Future<http.Response> postRequest(String email, String pass) async {
+    var url = 'http://172.20.10.6:3000/user/login';
+    var body = jsonEncode({
+      'data': {'email': email, 'motDePasse': pass}
+    });
+   http.post(url, headers: {"Content-Type": "application/json"}, body: body)
+        .then((http.Response response) {
+      if (response.statusCode == 200) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+      }
+    
+    });
+  }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -141,10 +189,11 @@ class LogInPageState extends State<LogInPage> {
                       splashColor: Color(0x25FFDDDD),
                       highlightColor: Colors.transparent,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage()));
-                      } ,
+                        builder: (BuildContext context) => HomePage()));
+                      //  _makePostRequest(_email, _password);
+                      },
                       child: Text(
                         "SIGN IN",
                         style: new TextStyle(
@@ -174,8 +223,10 @@ class LogInPageState extends State<LogInPage> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                           Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => SignUpPage()));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SignUpPage()));
                           }),
                     ],
                   ),
@@ -185,6 +236,4 @@ class LogInPageState extends State<LogInPage> {
       ),
     );
   }
-
-
 }
